@@ -13,10 +13,6 @@
             this.nodes = {};
             this.pendingActions = {};
             
-            if (util.getSetting('autoAwesome')===null) { 
-                util.setSetting('autoAwesome', 'off'); 
-            }
-            
             var keys = Object.keys(turntable);
             turntable.api = turntable[keys[keys.indexOf('getHashedAddr') + 1]];
             
@@ -239,13 +235,6 @@
                $('.upvotes, .downvotes, .queues').text(0).removeClass('active');
                
                $('.headback, .headfront').removeClass('rock');
-               
-               if (util.getSetting('autoAwesome')=='on') {
-                   setTimeout(function() {
-                       $(window).focus();
-                       turntable.room.manager.callback('upvote');
-                    }, Math.round(Math.random()*30000));
-               }
             }
         });
         
@@ -542,24 +531,6 @@
                                 ['div.black-right-header', {},['div.header-text', {}, 'Settings']], 
                                 menuItems, 
                                 ['div.options', {}, 
-                                    ['input#autoAwesome.toggle', {
-                                        type: 'range', 
-                                        min: 0, 
-                                        max: 1, 
-                                        value: ((util.getSetting('autoAwesome')=='on')?1:0), 
-                                        event: { 
-                                            click: function () {
-                                                $(this).val((($(this).val()==1)?0:1))
-                                            }, 
-                                            change: function () {
-                                                if ($(this).val()==1) {
-                                                    return util.setSetting('autoAwesome', 'on');
-                                                } 
-                                                return util.setSetting('autoAwesome', 'off');
-                                            }
-                                        }
-                                    }, ''], 
-                                    ['label', {for: 'autoAwesome'}, 'Auto-Awesome']
                                 ],
                                 
                             ];
