@@ -127,6 +127,10 @@ body {
   color: #f0f0f0;
   height: auto !important;
 }
+.chatHeader {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
 #right-panel .guest-list-container .guests .guest:nth-child(even) {
   background: -webkit-linear-gradient(left, #343434, rgba(52, 52, 52, 0));
 }
@@ -205,60 +209,62 @@ body {
   top: 160px;
   width: 300px;
 }
-#right-panel > div:first-child .playlist-container {
+#right-panel > div:first-child #playlist {
   background-color: #3c3c3c !important;
   bottom: 0;
   height: auto !important;
   top: 0;
 }
-#right-panel > div:first-child .playlist-container .mainPane {
+#right-panel > div:first-child #playlist .mainPane {
   bottom: 0;
   height: auto !important;
   position: absolute;
   top: 0;
 }
-#right-panel > div:first-child .playlist-container .mainPane .songlist {
+#right-panel > div:first-child #playlist .mainPane .song-list {
   bottom: 0;
   height: auto !important;
 }
-#right-panel > div:first-child .playlist-container .addSongsButton,
-#right-panel > div:first-child .playlist-container .playlistSearch {
+#right-panel > div:first-child #playlist .addSongsButton,
+#right-panel > div:first-child #playlist .playlistSearch {
   left: 46px !important;
 }
-#right-panel > div:first-child .playlist-container .queueView .processing {
+#right-panel > div:first-child #playlist .queueView .processing {
   background-color: #3c3c3c;
   border: 0;
 }
-#right-panel > div:first-child .playlist-container .songlist {
-  background-color: #3c3c3c !important;
+#right-panel > div:first-child #playlist .song-list,
+#right-panel > div:first-child #playlist #songs,
+#right-panel > div:first-child #playlist .songs {
+  background: #3c3c3c !important;
 }
-#right-panel > div:first-child .playlist-container .song,
-#right-panel > div:first-child .playlist-container .uploading {
+#right-panel > div:first-child #playlist .song,
+#right-panel > div:first-child #playlist .uploading {
   background-color: #404040 !important;
   border: 0;
 }
-#right-panel > div:first-child .playlist-container .song.nth-child-even,
-#right-panel > div:first-child .playlist-container .uploading:nth-child(even) {
+#right-panel > div:first-child #playlist .song.nth-child-even,
+#right-panel > div:first-child #playlist .uploading:nth-child(even) {
   background-color: #3c3c3c !important;
 }
-#right-panel > div:first-child .playlist-container .song:hover {
+#right-panel > div:first-child #playlist .song:hover {
   background-color: transparent;
-  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)) !important;
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)) !important;
 }
-#right-panel > div:first-child .playlist-container .song.topSong {
+#right-panel > div:first-child #playlist .song.topSong {
   background-position: left center;
 }
-#right-panel > div:first-child .playlist-container .song.topSong:hover,
-#right-panel > div:first-child .playlist-container .song.nth-child-even.topSong:hover {
+#right-panel > div:first-child #playlist .song.topSong:hover,
+#right-panel > div:first-child #playlist .song.nth-child-even.topSong:hover {
   background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)), url('https://s3.amazonaws.com/static.turntable.fm/images/playlist/record_icon.png') !important;
 }
-#right-panel > div:first-child .playlist-container .song .title,
-#right-panel > div:first-child .playlist-container .processing .text,
-#right-panel > div:first-child .playlist-container .uploading .text {
+#right-panel > div:first-child #playlist .song .title,
+#right-panel > div:first-child #playlist .processing .text,
+#right-panel > div:first-child #playlist .uploading .text {
   color: #f0f0f0 !important;
   font-weight: 100 !important;
 }
-#right-panel > div:first-child .playlist-container .song.filtered {
+#right-panel > div:first-child #playlist .song.filtered {
   border: 0px !important;
 }
 #right-panel .pane {
@@ -267,6 +273,12 @@ body {
   top: 160px;
   bottom: 0px;
   width: 300px;
+}
+#right-panel .pane {
+  background: #3c3c3c;
+  bottom: 40px;
+  color: #f0f0f0;
+  height: auto !important;
 }
 #right-panel .settings-container .btn {
   background: -webkit-linear-gradient(top, rgba(200, 200, 200, 0.1), transparent);
@@ -378,12 +390,7 @@ body {
   cursor: default !important;
   font-size: 10pt;
   font-weight: 100 !important;
-  left: 8px !important;
-  line-height: 25px;
-  top: 0;
-}
-.black-right-header .icon {
-  display: none;
+  line-height: 14pt;
 }
 #activity {
   bottom: 40px;
