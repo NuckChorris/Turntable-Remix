@@ -568,17 +568,18 @@ body {
   top: 100px;
   width: 300px;
   z-index: 2;
+  -webkit-perspective-origin: 50%;
+  -webkit-perspective: 500;
 }
 #nowPlaying .album,
 #nowPlaying .artist,
 #nowPlaying .bitrate,
 #nowPlaying .title {
-  margin: 10px 70px 0px 10px;
+  margin: 10px 110px 0px 10px;
 }
 #nowPlaying .stats {
   bottom: 10px;
   position: absolute;
-  -webkit-transition: opacity 250ms ease-in 250ms;
 }
 #nowPlaying .stats div {
   background-position: 10px 6px, 0px 0px;
@@ -643,11 +644,10 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 160px;
+  width: auto;
 }
-#nowPlaying .cover,
-#nowPlaying .coverGlow {
-  background-color: #505050;
+#nowPlaying .cover {
+  background-color: #D5D5D5;
   background-image: url(https://s3.amazonaws.com/static.turntable.fm/images/room/record.png);
   background-size: 55px;
   border-radius: 5px;
@@ -655,41 +655,20 @@ body {
   position: absolute;
   right: 15px;
   top: 15px;
-  -webkit-transition: all 250ms ease-in 250ms;
   width: 55px;
   z-index: 999;
 }
 #nowPlaying .cover {
   box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
-}
-#nowPlaying .coverGlow {
-  background-size: 65px;
-  -webkit-filter: opacity(0.5) blur(5px);
-  height: 65px;
-  right: 10px;
-  top: 10px;
-  width: 65px;
-  z-index: 998;
-}
-#nowPlaying .cover:hover {
-  background-size: 130px;
-  border-radius: 5px;
-  height: 130px;
-  -webkit-transition: all 250ms ease-out 250ms;
-  width: 130px;
-}
-#nowPlaying .cover:hover + .coverGlow {
-  background-image: none;
-  background-color: #3c3c3c;
-  background-size: 140px;
-  -webkit-filter: blur(0px) opacity(0);
-  height: 140px;
-  -webkit-transition: all 250ms ease-out 250ms;
-  width: 140px;
-}
-#nowPlaying .cover:hover + .coverGlow + .stats {
-  opacity: 0;
-  -webkit-transition: opacity 250ms ease-out 250ms;
+  -webkit-transform: rotateY(-30deg);
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-size: 90px;
+  height: 90px;
+  width: 90px;
+  box-shadow: rgba(255, 255, 255, 0.496094) 0px 4px 10px -1px;
 }
 #room-info-tab {
   bottom: 40px;

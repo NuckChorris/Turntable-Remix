@@ -470,7 +470,6 @@
                             ['span##bitrate', {}, '']
                         ], 
                         ['div.cover##coverart', {}, ''], 
-                        ['div.coverGlow##coverartGlow', {}, ''], 
                         [
                             'div.stats', {}, [
                                 'div.upvotes##upvotes', {
