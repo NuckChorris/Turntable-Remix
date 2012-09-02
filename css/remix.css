@@ -254,6 +254,16 @@ body {
 #right-panel > div:first-child #playlist .song.topSong {
   background-position: left center;
 }
+#right-panel > div:first-child #playlist .song.currentSong {
+  z-index: 0;
+}
+#right-panel > div:first-child #playlist .song .details,
+#right-panel > div:first-child #playlist .uploading .details {
+  color: #999;
+}
+#right-panel > div:first-child #playlist .song .progress {
+  background-color: rgba(255, 255, 255, 0.15);
+}
 #right-panel > div:first-child #playlist .song.topSong:hover,
 #right-panel > div:first-child #playlist .song.nth-child-even.topSong:hover {
   background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)), url('https://s3.amazonaws.com/static.turntable.fm/images/playlist/record_icon.png') !important;
