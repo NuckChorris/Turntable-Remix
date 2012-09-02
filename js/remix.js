@@ -57,23 +57,28 @@
                     var b = [],
                         g = $(".guest-list-container .guests");
                     b = _.sortBy(turntable.room.users, function(user, userid) {
-                        var rank = '3';
+                        var rank = '4';
                         if (user.fanof) {
-                            rank = 2;
+                            rank = '3';
                         } 
                         if (turntable.room.moderators.indexOf(userid)>=0) {
-                            rank = 1;
+                            rank = '1';
                         }
                         if (user.acl>0) { 
-                            rank = 0; 
+                            rank = '0'; 
                         }
+                        if (turntable.room.djIds.indexOf(userid)>=0) {
+                            rank = '2'+turntable.room.djIds.indexOf(userid)
+                        }
+                        user.rank = rank;
                         return rank + user.name.toLowerCase();
                     });
                     var c = g.find(".guest.selected").data("id");
                     g.find(".guest").remove();
+                    remix.nodes.guestList = {};
                     for (var e = 0, a = b.length; e < a; e++) {
                         var d = (c && c == b[e].userid) ? true : false;
-                        g.append(util.buildTree(remix.room.layouts.guestListName(b[e], this, d)));
+                        g.append(util.buildTree(remix.room.layouts.guestListName(b[e], this, d), remix.nodes.guestList));
                     }
                     $("span#totalUsers").text(b.length);
                     this.updateGuestListMenu();
@@ -86,7 +91,7 @@
                     for (var i in turntable) {
                         if (turntable.hasOwnProperty(i) && turntable[i] && turntable[i].hasOwnProperty('selfId')) {
                             turntable.room = turntable[i];
-                            console.log('Found room object.');
+                            //console.log('Found room object.');
                             this.room = new Room;
                         }
                     }
@@ -95,7 +100,7 @@
                     for (var i in turntable.room) {
                         if (turntable.room.hasOwnProperty(i) && turntable.room[i] && turntable.room[i].hasOwnProperty('myuserid')) {
                             turntable.room.manager = turntable.room[i];
-                            console.log('Found manager object.');
+                            //console.log('Found manager object.');
                             if (turntable.room.currentSong) {
                                 this.room.songs.add(new Song(turntable.room.currentSong));
                                 this.room.applyTooltips();
@@ -109,7 +114,7 @@
                     setTimeout(this.load.bind(this), 100);
                 }
                 else {
-                    console.log('Found room and manager objects.');
+                    //console.log('Found room and manager objects.');
                 }
             };
             
@@ -126,13 +131,15 @@
                 if (this.room.layouts.activities.hasOwnProperty(data.command)) {
                     var activity = this.room.layouts.activities[data.command](data);
                     if (activity) {
-                        $(remix.nodes.activities).prepend(util.buildTree(activity)).children(':first');
+                        activity = $(remix.nodes.activities).prepend(util.buildTree(activity)).children(':first');
                         if (activity[0].scrollWidth > 300) {
                             activity.addClass('oversized');
                         }
+                        var a = $(remix.nodes.activities).children('li')[250];
+                        if (a) { a.remove(); }
                     }
                     else {
-                        console.log(data.command, data);
+                        //console.log(data.command, data);
                     }
                 }
             }
@@ -140,7 +147,7 @@
                 setTimeout(this.room.updateSongCount, 250);
             }
             else if (data.hasOwnProperty('room') && data.hasOwnProperty('users')) {
-                console.log('Room info: %o', data);
+                //console.log('Room info: %o', data);
                 turntable.room.upvoters = [];
                 for (i in data.room.metadata.votelog) {
                     if (data.room.metadata.votelog[i][1]=='up') {
@@ -152,6 +159,7 @@
                         turntable.room.upvoters.push(data.room.metadata.votelog[i][0]);
                     }
                 }
+                remix.room.updateTitle();
                 setTimeout(function (d) {
                     this.room.songs.currentSong.updateVotes(d.room.metadata);
                     for (var i = 0; i<d.users.length; i++) {
@@ -169,11 +177,11 @@
                         delete this.pendingActions[data.msgid];
                     }
                 } else {
-                    console.log(data);
+                    //console.log(data);
                 }
             }
             else {
-                console.log(data);
+                //console.log(data);
             }
         };
         
@@ -252,6 +260,7 @@
                 });
             }, 
             updateVotes: function (data) {
+                turntable.room.updateGuestList();
                 this.set({
                     upvotes: data.upvotes, 
                     downvotes: data.downvotes
@@ -283,7 +292,7 @@
             songs: new Songs, 
             users: new Users, 
             initialize: function () {
-                console.log('Setting up room..');
+                //console.log('Setting up room..');
                 $('#top-panel, #right-panel').click(function() {
                     return turntable.room.removeGuestListMenu.
                             bind(turntable.room)();
@@ -296,11 +305,13 @@
                     append(util.buildTree(this.layouts.activityPanel, remix.nodes));
                 $('.guest-list-container').addClass('active');
                 $('.guest-list-container, #buddyListContainer,' +
-                  '#room-info-tab, .playlist-container').addClass('pane');
+                  '#room-info-tab, #playlist').addClass('pane');
                 $('#room-info-tab').appendTo('body');
-                $('.pmGreyTop').off('click');
+                $('#privateChatIcon').off('click');
                 $('.info .room').append(util.buildTree(this.layouts.roomButtons()));
                 $('body').append(util.buildTree(this.layouts.nowPlaying.bind(this)(), remix.nodes));
+                $('<div class="tab selected">').html('Room Chat').appendTo($('.chat-container .chatHeader'));
+                //$('<div class="tab">').html('Test Tab').appendTo($('.chat-container .chatHeader'));
             }, 
             upvote: function () {
                 remix.verifyAction(turntable.messageId, 'upvote');
@@ -324,7 +335,16 @@
             }, 
             updateSongCount: function () {
                 var songCount = turntable.playlist.files.length;
-                $('.playlist-container .header-text').text('My DJ Queue ('+songCount+')');
+                $('#playlist .header-text').text('My DJ Queue ('+songCount+')');
+            }, 
+            updateTitle: function(n) {
+                if (!n) { 
+                    n = '';
+                }
+                else {
+                    n = n + ' ';
+                }
+                document.title = n + turntable.room.name + ' - turntable.fm';
             }, 
             layouts: {
                 'activityPanel': [
@@ -434,7 +454,7 @@
                     return ['div#bottom-bar', {}, 
                         ['div.buttons', {}, 
                             ['div.btn.playlist', 
-                            buttonClick('.playlist-container'), 
+                            buttonClick('#playlist'), 
                             ''], 
                             ['div.btn.listeners.active', 
                             buttonClick('.guest-list-container'), 
@@ -512,7 +532,7 @@
                         ]
                     ];
                 }, 
-                'settingsPanel': function () {
+                'settingsPanel': function (a) {
                     var menuItems;
                     menuItems = ['div.content', {}];
                     $('#menuh > div + div').each(function () {
@@ -526,8 +546,22 @@
                         ];
                         return menuItems.push(item);
                     });
-                    return ['div.settings-container.pane#settingsPanel', {}, 
-                                ['div.black-right-header', {},['div.header-text', {}, 'Settings']], 
+                    return ['div.settings-container.pane'+((a)?'.active':'')+'#settingsPanel', {}, 
+                                ['div.black-right-header', {},['div.header-text', {}, 
+                                    'Settings',
+                                    ['a.refresh', {
+                                        href: '#',
+                                        event: {
+                                            click: function() {
+                                                console.log('refreshing');
+                                                $('#settingsPanel').remove();
+                                                $('#right-panel').
+                                                    append(util.buildTree(remix.room.layouts.settingsPanel(true)));
+                                                return false;
+                                            }
+                                        }
+                                    }, 'Refresh']
+                                ]], 
                                 menuItems, 
                                 ['div.options', {}, 
                                 ],
@@ -537,15 +571,24 @@
                 'guestListName': function(b, f, c) {
                     var a = "https://s3.amazonaws.com/static.turntable.fm/roommanager_assets/avatars/" + b.avatarid + "/scaled/55/headfront.png";
                     var e = c ? ".guest.selected" : ".guest";
-                    var d = "";
-                    if (f.isSuperuser(b.userid)) {
-                        d = ".superuser";
-                    } else {
-                        if (f.isMod(b.userid)) {
-                            d = ".mod";
-                        }
+                    var g = ['div.icons', {}];
+                    if (b.acl>0) { 
+                        g.push(['div.superuser']); 
                     }
-                    return ["div" + e, {
+                    if (turntable.room.djIds.indexOf(b.userid)>=0) {
+                        g.push(['div.dj']);
+                    }
+                    if (turntable.room.moderators.indexOf(b.userid)>=0) {
+                        g.push(['div.mod']);
+                    }
+                    if (b.fanof) {
+                        g.push(['div.fan']);
+                    } 
+                    if (g.length==2) {
+                        g='';
+                    }
+                    var v = (turntable.room.upvoters.indexOf(b.userid)>=0)?'.awesome':'';
+                    return ["div" + e + v + '##'+b.userid, {
                         event: {
                             mouseover: function() {
                                 $(this).find("div.guestArrow").show();
@@ -579,9 +622,9 @@
                     {
                         src: a,
                         height: "20"
-                    }]], ["div.guestName" + d,
+                    }]], ["div.guestName",
                     {},
-                    b.name], ["div.guestArrow"]];
+                    b.name], ["div.guestArrow"], g];
                 }
             }
         });
