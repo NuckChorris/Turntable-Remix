@@ -244,6 +244,12 @@ body {
 #right-panel > div:first-child #playlist .playlistSearch {
   left: 46px !important;
 }
+#right-panel > div:first-child #playlist #upload-button > .tt-button {
+  background-image: -webkit-linear-gradient(top, rgba(200, 200, 200, 0.1), transparent);
+  box-shadow: inset 0px 1px rgba(200, 200, 200, 0.1);
+  border-radius: 5px;
+  border-color: rgba(0, 0, 0, 0.4);
+}
 #right-panel > div:first-child #playlist .queueView .processing {
   background-color: #3c3c3c;
   border: 0;
