@@ -140,6 +140,7 @@ body {
 }
 #right-panel .guest-list-container .guests .guest.awesome {
   box-shadow: inset 2px 0px 2px -1px #00aa00;
+  background-image: -webkit-linear-gradient(left, rgba(0, 255, 0, 0.3), rgba(0, 255, 0, 0.1) 50px, rgba(0, 255, 0, 0.05) 100px);
 }
 #right-panel .guest-list-container .guests .nibTop .guestOptionsNib {
   background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
@@ -171,10 +172,6 @@ body {
   text-align: right;
   -webkit-transition: width 250ms ease-out;
   white-space: nowrap;
-  width: 23px;
-}
-#right-panel .guest-list-container .guests .guest:hover .icons {
-  -webkit-transition: width 250ms ease-in;
   width: 100px;
 }
 #right-panel .guest-list-container .guests .guest .idleTime div,
